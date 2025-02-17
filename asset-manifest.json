@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/e-freight_news/static/js/main.a922295b.js",
+    "main.js": "/e-freight_news/static/js/main.d3140bec.js",
     "index.html": "/e-freight_news/index.html",
-    "main.a922295b.js.map": "/e-freight_news/static/js/main.a922295b.js.map"
+    "main.d3140bec.js.map": "/e-freight_news/static/js/main.d3140bec.js.map"
   },
   "entrypoints": [
-    "static/js/main.a922295b.js"
+    "static/js/main.d3140bec.js"
   ]
 }

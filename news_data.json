@@ -1,0 +1,11 @@
+[
+  {
+    "title": "示例新闻",
+    "category": "policy",
+    "location": "中国",
+    "content": "这是一条测试新闻内容。",
+    "date": "2024-02-17",
+    "source": "测试来源",
+    "link": "https://example.com"
+  }
+]
