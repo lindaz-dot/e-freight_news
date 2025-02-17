@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>货运电动化周报 - 全球动态追踪</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .news-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 页眉 -->
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-bold text-green-600 mb-4">全球货运电动化周报</h1>
+            <div class="flex justify-center space-x-4">
+                <button onclick="filterNews('all')" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">全部</button>
+                <button onclick="filterNews('policy')" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">政策动态</button>
+                <button onclick="filterNews('enterprise')" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">企业行动</button>
+                <button onclick="filterNews('technology')" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">技术创新</button>
+            </div>
+        </header>
+
+        <!-- 新闻列表 -->
+        <div id="newsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- 下载按钮 -->
+        <div class="mt-12 text-center">
+            <button onclick="exportToCSV()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 shadow-lg">
+                下载本周简报 (CSV)
+            </button>
+        </div>
+    </div>
+
+    <!-- 示例数据 -->
+    <script>
+        const newsData = [
+            {
+                title: "深圳盐田港部署50辆电动集卡",
+                category: "enterprise",
+                location: "中国广东省深圳市盐田区",
+                content: "盐田国际集装箱码头近日投入运营首批50辆电动集卡，预计年度减碳量达...",
+                date: "2024-03-15",
+                source: "中国交通新闻网"
+            },
+            {
+                title: "欧盟通过重型车零排放法案",
+                category: "policy",
+                location: "欧盟",
+                content: "新法规要求2030年前所有新售重型车需实现零排放...",
+                date: "2024-03-14",
+                source: "Reuters"
+            },
+            // 更多数据...
+        ];
+
+        function renderNews(category = 'all') {
+            const container = document.getElementById('newsContainer');
+            container.innerHTML = newsData
+                .filter(item => category === 'all' || item.category === category)
+                .map(item => `
+                    <div class="news-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="category-badge ${getCategoryColor(item.category)}">
+                                ${getCategoryCN(item.category)}
+                            </span>
+                            <span class="text-sm text-gray-500">${item.date}</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">${item.title}</h3>
+                        <p class="text-gray-600 mb-3">${item.content}</p>
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>📍 ${item.location}</span>
+                            <span>来源: ${item.source}</span>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                policy: 'bg-blue-100 text-blue-800',
+                enterprise: 'bg-purple-100 text-purple-800',
+                technology: 'bg-orange-100 text-orange-800'
+            };
+            return colors[category] || 'bg-gray-100';
+        }
+
+        function getCategoryCN(category) {
+            const names = {
+                policy: '政策动态',
+                enterprise: '企业行动',
+                technology: '技术创新'
+            };
+            return names[category] || '其他';
+        }
+
+        function filterNews(category) {
+            renderNews(category);
+        }
+
+        function exportToCSV() {
+            const csvContent = "分类,标题,地区,日期,来源,摘要\n" +
+                newsData.map(item => 
+                    `"${getCategoryCN(item.category)}","${item.title}","${item.location}",` +
+                    `"${item.date}","${item.source}","${item.content}"`
+                ).join("\n");
+            
+            const blob = new Blob(["\ufeff"+csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `货运电动化周报_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+
+        // 初始化渲染
+        renderNews();
+    </script>
+</body>
+</html>
